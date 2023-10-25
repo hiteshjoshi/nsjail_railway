@@ -30,4 +30,4 @@ COPY --from=oven/bun:1.0.6 /usr/local/bin/bun /usr/bin/bun
 COPY --from=nsjail /nsjail/nsjail /bin/nsjail
 
 
-CMD ["/bin/nsjail --config bun.proto -- /usr/bin/bun run index.ts"]
+CMD ["/usr/bin/bun run index.ts"]
