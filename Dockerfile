@@ -1,8 +1,6 @@
-FROM debian:bookworm-slim as nsjail
+FROM debian:bookworm-slim
 
-WORKDIR /nsjail
-
-ARG nsjail=""
+WORKDIR /
 
 RUN apt-get -y update \
     && apt-get install -y \
@@ -22,21 +20,12 @@ RUN git clone -b master --single-branch https://github.com/google/nsjail.git . \
     && git checkout dccf911fd2659e7b08ce9507c25b2b38ec2c5800;
 RUN make
 
-FROM debian:bookworm-slim
-
-RUN apt-get update && apt-get install -y \
-       ca-certificates \
-       pkg-config \
-       libssl-dev \
-       libprotobuf-dev=3.21.* \
-        libnl-route-3-dev \
-       libpq5 \
-    && apt-get clean \
+RUN apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy application binary
-ADD . .
-COPY --from=oven/bun:1.0.6 /usr/local/bin/bun /usr/bin/bun
-COPY --from=nsjail /nsjail/nsjail /bin/nsjail
 
-CMD ["/bin/nsjail --config /bun.proto -- /usr/bin/bun run index.ts"]
+COPY --from=oven/bun:1.0.6 /usr/local/bin/bun /bun
+
+ADD . .
+
+CMD ["/nsjail --config /bun.proto -- /bun run index.ts"]
