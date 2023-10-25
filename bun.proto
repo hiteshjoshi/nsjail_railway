@@ -8,6 +8,8 @@ disable_rl: true
 
 mount_proc: true
 
+time_limit: 60
+
 cwd: "/tmp/bun"
 
 clone_newnet: false

@@ -1,0 +1,7 @@
+[
+    {
+        "names": ["bind"],
+        "action": "SCMP_ACT_ERRNO",
+        "args": []
+    }
+]
