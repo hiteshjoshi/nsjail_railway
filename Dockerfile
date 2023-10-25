@@ -4,7 +4,7 @@ WORKDIR /nsjail
 
 ARG nsjail=""
 
-RUN  if [ "$nsjail" = "true" ]; then apt-get -y update \
+RUN apt-get -y update \
     && apt-get install -y \
     bison=2:3.8.* \
     flex=2.6.* \
@@ -18,9 +18,9 @@ RUN  if [ "$nsjail" = "true" ]; then apt-get -y update \
     protobuf-compiler=3.21.*; fi
 
 
-RUN if [ "$nsjail" = "true" ]; then git clone -b master --single-branch https://github.com/google/nsjail.git . \
-    && git checkout dccf911fd2659e7b08ce9507c25b2b38ec2c5800; fi
-RUN if [ "$nsjail" = "true" ]; then make; else touch nsjail; fi
+RUN git clone -b master --single-branch https://github.com/google/nsjail.git . \
+    && git checkout dccf911fd2659e7b08ce9507c25b2b38ec2c5800;
+RUN make
 
 FROM debian:bookworm-slim
 
