@@ -1,11 +1,9 @@
-FROM debian:bookworm-slim
-
+FROM debian:bookworm-slim as nsjail
 
 WORKDIR /nsjail
 
-ADD . .
 
-RUN apt-get -y update \
+RUN  apt-get -y update \
     && apt-get install -y \
     bison=2:3.8.* \
     flex=2.6.* \
@@ -20,14 +18,16 @@ RUN apt-get -y update \
 
 
 RUN git clone -b master --single-branch https://github.com/google/nsjail.git . \
-    && git checkout dccf911fd2659e7b08ce9507c25b2b38ec2c5800;
-RUN make
+    && git checkout dccf911fd2659e7b08ce9507c25b2b38ec2c5800
+RUN make; else touch nsjail
 
-RUN apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+FROM debian:bookworm-slim
 
-
-COPY --from=oven/bun:1.0.6 /usr/local/bin/bun /bun
+ADD . .
 
 
-CMD ["/nsjail/nsjail --config /nsjail/bun.proto -- /nsjail/bun run index.ts"]
+COPY --from=oven/bun:1.0.6 /usr/local/bin/bun /usr/bin/bun
+COPY --from=nsjail /nsjail/nsjail /bin/nsjail
+
+
+CMD ["/bin/nsjail --config bun.proto -- /usr/bin/bun run index.ts"]
