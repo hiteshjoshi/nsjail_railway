@@ -1,8 +1,9 @@
 FROM debian:bookworm-slim
 
-ADD . .
 
-WORKDIR /
+WORKDIR /nsjail
+
+ADD . .
 
 RUN apt-get -y update \
     && apt-get install -y \
@@ -29,4 +30,4 @@ RUN apt-get clean \
 COPY --from=oven/bun:1.0.6 /usr/local/bin/bun /bun
 
 
-CMD ["/nsjail --config /bun.proto -- /bun run index.ts"]
+CMD ["/nsjail/nsjail --config /nsjail/bun.proto -- /nsjail/bun run index.ts"]
