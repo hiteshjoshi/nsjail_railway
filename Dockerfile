@@ -23,6 +23,16 @@ RUN make
 
 FROM debian:bookworm-slim
 
+RUN apt-get update && apt-get install -y \
+       ca-certificates \
+       pkg-config \
+       libssl-dev \
+       libprotobuf-dev=3.21.* \
+        libnl-route-3-dev \
+       libpq5 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
 ADD bun.proto .
