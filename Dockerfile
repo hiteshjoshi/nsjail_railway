@@ -19,7 +19,7 @@ RUN  apt-get -y update \
 
 RUN git clone -b master --single-branch https://github.com/google/nsjail.git . \
     && git checkout dccf911fd2659e7b08ce9507c25b2b38ec2c5800
-RUN make; else touch nsjail
+RUN make
 
 FROM debian:bookworm-slim
 
