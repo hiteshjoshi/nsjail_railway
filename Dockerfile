@@ -13,7 +13,7 @@ RUN apt-get -y update \
     libnl-route-3-dev=3.7.* \
     make=4.3-4.1 \
     pkg-config=1.8.* \
-    protobuf-compiler=3.21.*; fi
+    protobuf-compiler=3.21.*
 
 
 RUN git clone -b master --single-branch https://github.com/google/nsjail.git . \
